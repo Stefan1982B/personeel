@@ -162,15 +162,15 @@ a {
 }
 
 dt {
-	clear:left;
-	float: left;
-	width: 15em;
+	font-weight: bold;
+/* 	clear:left; */
+/* 	float: left; */
+/* 	width: 15em; */
 }
 
-dd {
-	margin-left: 15em;
-	font-weight: bold;
-}
+/* dd { */
+/* 	font-weight: bold; */
+/* } */
 
 blockquote {
 	margin-left: 0;
@@ -197,4 +197,8 @@ blockquote {
 
 .pagineren a:hover {
 	text-decoration: underline;
+}
+
+#werknemeropties li{
+	display:inline; 
 }

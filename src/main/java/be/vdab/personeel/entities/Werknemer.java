@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,7 +37,9 @@ public class Werknemer implements Serializable {
 	private String familienaam;
 	private String voornaam;
 	private String email;
-	private long jobtitelid;
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "jobtitelid")
+	private Jobtitel jobtitel;
 	@NotNull
 	@Min(1)
 	@NumberFormat(style = Style.NUMBER)
@@ -49,12 +52,12 @@ public class Werknemer implements Serializable {
 	private long rijksregisternr;
 	@Version
 	private int versie;
-	@ManyToOne
-	@JoinColumn(name="chefid")
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "chefid")
 	private Werknemer chef;
 	@OneToMany(mappedBy = "chef")
 	private Set<Werknemer> werknemerLijst;
-	
+
 	public long getId() {
 		return id;
 	}
@@ -69,10 +72,6 @@ public class Werknemer implements Serializable {
 
 	public String getEmail() {
 		return email;
-	}
-
-	public long getJobtitelid() {
-		return jobtitelid;
 	}
 
 	public BigDecimal getSalaris() {
@@ -123,6 +122,10 @@ public class Werknemer implements Serializable {
 		if (rijksregisternr != other.rijksregisternr)
 			return false;
 		return true;
+	}
+
+	public Jobtitel getJobtitel() {
+		return jobtitel;
 	}
 
 }

@@ -1,17 +1,19 @@
 package be.vdab.personeel.repositories;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.ReflectionUtils;
@@ -20,13 +22,20 @@ import be.vdab.personeel.entities.Werknemer;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
+//@Import(WerknemerRepository.class)
+@Sql("/insertJobtitel.sql")
+@Sql("/insertWerknemer.sql")
 public class WerknemerRepositoryTest extends AbstractTransactionalJUnit4SpringContextTests {
 
 	private Werknemer werknemer;
-	private static final String WERKNEMERS = "werknemers"; 
+	private static final String WERKNEMERS = "werknemers";
 
 	@Autowired
 	private WerknemerRepository repository;
+
+	private long idVanTestWerknemer() {
+		return super.jdbcTemplate.queryForObject("select id from werknemers where voornaam='testVoornaam'", Long.class);
+	}
 
 	void vulPrivate(String veldnaam, Object waarde) {
 		Field field = ReflectionUtils.findField(Werknemer.class, veldnaam);
@@ -60,14 +69,21 @@ public class WerknemerRepositoryTest extends AbstractTransactionalJUnit4SpringCo
 		assertEquals(1L, werknemer.getId());
 
 	}
+	
+//	@Test
+//	public void findByJobtitelId() {
+//		List<Werknemer> werknemers = repository.findByJobtitelid(1);
+//		assertEquals(1, werknemers.size());
+//		assertEquals("testFamilienaam", werknemers.get(0).getFamilienaam());
+//	}
 
-	@Test
-	public void create() {
-		int aantalWerknemers = super.countRowsInTable(WERKNEMERS);
-		repository.save(werknemer);
-		assertEquals(aantalWerknemers + 1, super.countRowsInTable(WERKNEMERS));
-		assertNotEquals(0, werknemer.getId());
-		assertEquals(1, super.countRowsInTableWhere(WERKNEMERS, "id=" + werknemer.getId()));
-	}
+//	@Test
+//	public void create() {
+//		int aantalWerknemers = super.countRowsInTable(WERKNEMERS);
+//		repository.save(werknemer);
+//		assertEquals(aantalWerknemers + 1, super.countRowsInTable(WERKNEMERS));
+//		assertNotEquals(0, werknemer.getId());
+//		assertEquals(1, super.countRowsInTableWhere(WERKNEMERS, "id=" + werknemer.getId()));
+//	}
 
 }

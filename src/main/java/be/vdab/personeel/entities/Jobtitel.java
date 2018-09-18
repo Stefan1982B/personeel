@@ -24,8 +24,7 @@ public class Jobtitel implements Serializable {
 	private String naam;
 	@Version
 	private int versie;
-	@OneToMany
-	@JoinColumn(name = "jobtitelid")
+	@OneToMany(mappedBy = "jobtitel")
 	private Set<Werknemer> werknemerLijst;
 
 	public Set<Werknemer> getWerknemerLijst() {
