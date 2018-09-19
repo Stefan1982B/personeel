@@ -1,5 +1,6 @@
 package be.vdab.personeel.services;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
+import be.vdab.personeel.entities.Jobtitel;
 import be.vdab.personeel.entities.Werknemer;
 import be.vdab.personeel.repositories.WerknemerRepository;
 
@@ -20,10 +22,10 @@ class DefaultWerknemerService implements WerknemerService {
 		this.werknemerRepository = werknemerRepository;
 	}
 
-//	@Override
-//	public List<Werknemer> findByJobtitelid(long jobtitelid) {
-//		return werknemerRepository.findByJobtitelid(jobtitelid);
-//	}
+	@Override
+	public List<Werknemer> findByJobtitel(Jobtitel jobtitel) {
+		return werknemerRepository.findByJobtitel(jobtitel);
+	}
 
 	@Override
 	public Optional<Werknemer> read(long id) {
@@ -39,5 +41,17 @@ class DefaultWerknemerService implements WerknemerService {
 	public Optional<Werknemer> readWnZonderChef() {
 		return werknemerRepository.findByChefIsNull();
 	}
+
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
+	public void opslag(long id, BigDecimal opslag) {
+		  werknemerRepository.findById(id).ifPresent(werknemer -> werknemer.opslag(opslag));
+		
+	}
+
+//	@Override
+//	public Optional<Werknemer> findByRijksregisternr(long rijksregisternr) {
+//		return werknemerRepository.findByRijksregisternr(rijksregisternr);
+//	}
 
 }

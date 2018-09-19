@@ -3,8 +3,9 @@
 <head th:replace="fragments::head(title='Personeel')"></head>
 <body>
 	<h1>Menu</h1>
+	<div th:if='${param.fout !=null}' th:text='${param.fout}' class='fout'></div>
 	<ul>
-		<li><a th:href='@{/werknemershiërarchie}'>Werknemershiërarchie</a></li>
+		<li><a th:href='@{/werknemers}'>Werknemershiërarchie</a></li>
 		<li><a th:href='@{/jobtitels}'>Jobtitels</a></li>
 	</ul>
 </body>

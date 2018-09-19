@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang='nl' xmlns:th='http://www.thymeleaf.org'>
+<head th:replace="fragments::head(title='Jobtitels')"></head>
+<body>
+	<h1>Jobtitels</h1>
+
+	<ul id='jobtitels'>
+		<li th:each='jobtitel:${jobtitels}'><a
+			th:href='@{/jobtitels/{jobtitel}(jobtitel=${jobtitel.id})}' th:text='${jobtitel.naam}'></a></li>
+	</ul>
+</body>
+</html>

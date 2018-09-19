@@ -19,7 +19,7 @@
 		<dt>Ondergeschikten</dt>
 		<ul>
 			<li th:each='ondergeschikte:${ondergeschikten}'>
-			<a th:href='@{/werknemershiërarchie/{id}(id=${ondergeschikte.id})}' th:text='|${ondergeschikte.voornaam} ${ondergeschikte.familienaam}|'></a></li>
+			<a th:href='@{/werknemers/{id}(id=${ondergeschikte.id})}' th:text='|${ondergeschikte.voornaam} ${ondergeschikte.familienaam}|'></a></li>
 		</ul>
 		<dt>Foto</dt>
 		<img th:alt='|foto werknemer|'

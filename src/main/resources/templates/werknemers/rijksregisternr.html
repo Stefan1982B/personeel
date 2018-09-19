@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang='nl' xmlns:th='http://www.thymeleaf.org'>
+<head
+	th:replace='fragments::head(title=|RijksregisterNr ${werknemer.voornaam} ${werknemer.familienaam}|)'></head>
+<body>
+	<h1
+		th:text='|RijksregisterNr van ${werknemer.voornaam} ${werknemer.familienaam}|'></h1>
+
+	<form method='post'
+		th:action='@{/werknemers/{id}/rijksregisterNr(id=${werknemer.id})}'
+		th:object='${rijksregisterNrForm}'>
+		<label>Rijksregisternummer: <span th:if="${#fields.hasErrors('rijksregisterNr')}"
+			th:errors='*{rijksregisterNr}'></span> <input
+			th:field='*{rijksregisterNr}' required autofocus>
+		</label> <input type='submit' value='Bewaren' name='rijksregisterNr'>
+	</form>
+</body>
+</html>

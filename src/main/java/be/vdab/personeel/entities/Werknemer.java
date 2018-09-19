@@ -21,9 +21,10 @@ import javax.validation.constraints.Digits;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
+
+import be.vdab.personeel.constraints.RijksregisterNr;
 
 @Entity
 @Table(name = "werknemers")
@@ -42,12 +43,12 @@ public class Werknemer implements Serializable {
 	private Jobtitel jobtitel;
 	@NotNull
 	@Min(1)
-	@NumberFormat(style = Style.NUMBER)
 	@Digits(integer = 10, fraction = 2)
+	@NumberFormat(style = Style.NUMBER)
 	private BigDecimal salaris;
 	private String paswoord;
-	@DateTimeFormat(style = "S-")
 	private LocalDate geboorte;
+	@RijksregisterNr
 	@Column(unique = true)
 	private long rijksregisternr;
 	@Version
@@ -126,6 +127,10 @@ public class Werknemer implements Serializable {
 
 	public Jobtitel getJobtitel() {
 		return jobtitel;
+	}
+
+	public void opslag(BigDecimal opslag) {
+		salaris = salaris.add(opslag);
 	}
 
 }
