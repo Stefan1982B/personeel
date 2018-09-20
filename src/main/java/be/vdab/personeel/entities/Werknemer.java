@@ -14,6 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
@@ -29,7 +31,10 @@ import be.vdab.personeel.constraints.RijksregisterNr;
 @Entity
 @Table(name = "werknemers")
 @RijksregisterNr
+@NamedEntityGraph(name = Werknemer.MET_JOBTITEL, attributeNodes = @NamedAttributeNode("jobtitel"))
 public class Werknemer implements Serializable {
+
+	public static final String MET_JOBTITEL = "Werknemer.metJobtitel";
 
 	private static final long serialVersionUID = 1L;
 

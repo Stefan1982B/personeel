@@ -1,7 +1,6 @@
 package be.vdab.personeel.repositories;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
@@ -18,30 +17,35 @@ import org.springframework.test.context.junit4.AbstractTransactionalJUnit4Spring
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.ReflectionUtils;
 
+import be.vdab.personeel.entities.Jobtitel;
 import be.vdab.personeel.entities.Werknemer;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
-//@Import(WerknemerRepository.class)
 @Sql("/insertJobtitel.sql")
 @Sql("/insertWerknemer.sql")
 public class WerknemerRepositoryTest extends AbstractTransactionalJUnit4SpringContextTests {
 
 	private Werknemer werknemer;
-	private static final String WERKNEMERS = "werknemers";
+	private Jobtitel jobtitel;
 
 	@Autowired
-	private WerknemerRepository repository;
+	private WerknemerRepository werknemerRepository;
+	
+	@Autowired JobtitelRepository jobtitelRepository;
 
 	private long idVanTestWerknemer() {
 		return super.jdbcTemplate.queryForObject("select id from werknemers where voornaam='testVoornaam'", Long.class);
+	}
+	
+	private long idVanJobtitel() {
+		return super.jdbcTemplate.queryForObject("select id from jobtitels where naam='testTitelNaam'", Long.class);
 	}
 
 	void vulPrivate(String veldnaam, Object waarde) {
 		Field field = ReflectionUtils.findField(Werknemer.class, veldnaam);
 		ReflectionUtils.makeAccessible(field);
 		ReflectionUtils.setField(field, werknemer, waarde);
-
 	}
 
 	@Before
@@ -50,14 +54,15 @@ public class WerknemerRepositoryTest extends AbstractTransactionalJUnit4SpringCo
 		vulPrivate("familienaam", "Schuddinck");
 		vulPrivate("voornaam", "Stefan");
 		vulPrivate("email", "stefanschuddinck@hotmail.com");
-//		vulPrivate("chefid", 1L);
-		vulPrivate("jobtitelid", 1L);
+		vulPrivate("chef", null);
+		vulPrivate("jobtitel", jobtitel);
 		vulPrivate("paswoord", "vdab");
 		vulPrivate("geboorte", LocalDate.of(1989, 10, 10));
 		vulPrivate("rijksregisternr", 82080432176L);
 		vulPrivate("versie", 1);
 		vulPrivate("salaris", BigDecimal.TEN);
 		vulPrivate("id", 1L);
+		jobtitel = new Jobtitel();
 	}
 
 	@Test
@@ -69,21 +74,25 @@ public class WerknemerRepositoryTest extends AbstractTransactionalJUnit4SpringCo
 		assertEquals(1L, werknemer.getId());
 
 	}
-	
-//	@Test
-//	public void findByJobtitelId() {
-//		List<Werknemer> werknemers = repository.findByJobtitelid(1);
-//		assertEquals(1, werknemers.size());
-//		assertEquals("testFamilienaam", werknemers.get(0).getFamilienaam());
-//	}
 
-//	@Test
-//	public void create() {
-//		int aantalWerknemers = super.countRowsInTable(WERKNEMERS);
-//		repository.save(werknemer);
-//		assertEquals(aantalWerknemers + 1, super.countRowsInTable(WERKNEMERS));
-//		assertNotEquals(0, werknemer.getId());
-//		assertEquals(1, super.countRowsInTableWhere(WERKNEMERS, "id=" + werknemer.getId()));
-//	}
+	@Test
+	public void findByJobtitel() {
+		List<Werknemer> werknemers = werknemerRepository.findByJobtitel(jobtitelRepository.findById(idVanJobtitel()).get());
+		assertEquals(1, werknemers.size());
+		assertEquals("testFamilienaam", werknemers.get(0).getFamilienaam());
+	}
+
+	@Test
+	public void findByChef() {
+		List<Werknemer> werknemers = werknemerRepository.findByChef(werknemerRepository.findById(idVanTestWerknemer()).get());
+		assertEquals(1, werknemers.size());
+		assertEquals("testFamilienaam", werknemers.get(0).getFamilienaam());
+	}
+
+	@Test 
+	public void WerknemerLazyLoaded() { 
+		Werknemer werknemer = werknemerRepository.findById(idVanTestWerknemer()).get(); 
+		assertEquals("testTitelNaam", werknemer.getJobtitel().getNaam()); 
+		}
 
 }

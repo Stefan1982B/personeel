@@ -49,13 +49,6 @@ class DefaultWerknemerService implements WerknemerService {
 
 	}
 
-//	@Override
-//	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
-//	public void wijzigRijksregisternr(long id, long rijksregisterNr) {
-//		werknemerRepository.findById(id).ifPresent(werknemer -> werknemer.wijzigRijksregisternr(rijksregisterNr));
-//
-//	}
-
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
 	public void update(Werknemer werknemer) {
