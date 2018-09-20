@@ -2,11 +2,8 @@ package be.vdab.personeel.web;
 
 import javax.validation.constraints.NotNull;
 
-import be.vdab.personeel.constraints.RijksregisterNr;
-
 public class RijksregisterNrForm {
 	@NotNull
-	@RijksregisterNr
 	private long rijksregisterNr;
 
 	public long getRijksregisterNr() {

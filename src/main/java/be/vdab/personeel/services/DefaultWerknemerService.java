@@ -45,13 +45,14 @@ class DefaultWerknemerService implements WerknemerService {
 	@Override
 	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
 	public void opslag(long id, BigDecimal opslag) {
-		  werknemerRepository.findById(id).ifPresent(werknemer -> werknemer.opslag(opslag));
-		
+		werknemerRepository.findById(id).ifPresent(werknemer -> werknemer.opslag(opslag));
+
 	}
 
-//	@Override
-//	public Optional<Werknemer> findByRijksregisternr(long rijksregisternr) {
-//		return werknemerRepository.findByRijksregisternr(rijksregisternr);
-//	}
+	@Override
+	@Transactional(readOnly = false, isolation = Isolation.READ_COMMITTED)
+	public void wijzigRijksregisternr(long id, long rijksregisterNr) {
+		werknemerRepository.findById(id).ifPresent(werknemer -> werknemer.wijzigRijksregisternr(rijksregisterNr));
 
+	}
 }

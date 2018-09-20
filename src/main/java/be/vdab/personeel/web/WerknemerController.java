@@ -7,10 +7,13 @@ import javax.validation.Valid;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -19,6 +22,7 @@ import be.vdab.personeel.services.WerknemerService;
 
 @Controller
 @RequestMapping("werknemers")
+@SessionAttributes("werknemer")
 class WerknemerController {
 	private static final String WERKNEMER_VIEW = "werknemers/werknemer";
 
@@ -68,7 +72,7 @@ class WerknemerController {
 			BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		if (werknemer.isPresent()) {
 			if (bindingResult.hasErrors()) {
-				return new ModelAndView(OPSLAG_VIEW).addObject(new OpslagForm()).addObject(werknemer.get());
+				return new ModelAndView(OPSLAG_VIEW).addObject(werknemer.get());
 			}
 			werknemerService.opslag(werknemer.get().getId(), form.getOpslag());
 			redirectAttributes.addAttribute("id", werknemer.get().getId());
@@ -83,7 +87,27 @@ class WerknemerController {
 	@GetMapping("{werknemer}/rijksregisterNr")
 	ModelAndView rijksregisterNr(@PathVariable Optional<Werknemer> werknemer, RedirectAttributes redirectAttributes) {
 		if (werknemer.isPresent()) {
-			return new ModelAndView(RIJKSREGISTERNR_VIEW).addObject(new RijksregisterNrForm()).addObject(werknemer.get());
+			RijksregisterNrForm form = new RijksregisterNrForm();
+			form.setRijksregisterNr(werknemer.get().getRijksregisternr());
+			return new ModelAndView(RIJKSREGISTERNR_VIEW).addObject(form).addObject(werknemer.get());
+		}
+		redirectAttributes.addAttribute("fout", "Werknemer niet gevonden");
+		return new ModelAndView(REDIRECT_BIJ_WERKNEMER_NIET_GEVONDEN);
+	}
+
+	private static final String REDIRECT_NA_RIJKSREGISTERNR = "redirect:/werknemers/{id}";
+
+	@PostMapping(value = "{werknemer}/rijksregisterNr", params = "rijksregisterNr")
+	ModelAndView rijksregisterNr(@PathVariable Optional<Werknemer> werknemer, @Validated(Werknemer.Stap1.class) Werknemer werkn, SessionStatus sessionStatus,
+			BindingResult bindingResult, RedirectAttributes redirectAttributes, RijksregisterNrForm form) {
+		if (werknemer.isPresent()) {
+			if (bindingResult.hasErrors()) {
+				return new ModelAndView(RIJKSREGISTERNR_VIEW).addObject(werknemer.get());
+			}
+			werknemerService.wijzigRijksregisternr(werknemer.get().getId(), form.getRijksregisterNr());
+			sessionStatus.setComplete();
+			redirectAttributes.addAttribute("id", werknemer.get().getId());
+			return new ModelAndView(REDIRECT_NA_RIJKSREGISTERNR);
 		}
 		redirectAttributes.addAttribute("fout", "Werknemer niet gevonden");
 		return new ModelAndView(REDIRECT_BIJ_WERKNEMER_NIET_GEVONDEN);

@@ -25,10 +25,14 @@ import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
 import be.vdab.personeel.constraints.RijksregisterNr;
+import be.vdab.personeel.entities.Werknemer.Stap1;
 
 @Entity
 @Table(name = "werknemers")
+@RijksregisterNr(groups = Stap1.class)
 public class Werknemer implements Serializable {
+	
+	public interface Stap1{};
 
 	private static final long serialVersionUID = 1L;
 
@@ -48,8 +52,8 @@ public class Werknemer implements Serializable {
 	private BigDecimal salaris;
 	private String paswoord;
 	private LocalDate geboorte;
-	@RijksregisterNr
 	@Column(unique = true)
+	@NotNull(groups = Stap1.class)
 	private long rijksregisternr;
 	@Version
 	private int versie;
@@ -131,6 +135,10 @@ public class Werknemer implements Serializable {
 
 	public void opslag(BigDecimal opslag) {
 		salaris = salaris.add(opslag);
+	}
+
+	public void wijzigRijksregisternr(long rijksregisterNr) {
+		rijksregisternr = rijksregisterNr;
 	}
 
 }

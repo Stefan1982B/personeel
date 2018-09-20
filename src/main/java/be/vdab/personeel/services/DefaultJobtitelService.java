@@ -20,11 +20,6 @@ class DefaultJobtitelService implements JobtitelService{
 		this.jobtitelRepository = jobtitelRepository;
 	}
 
-//	@Override
-//	public List<Jobtitel> findJobtitel() {
-//		return jobtitelRepository.findJobtitels();
-//	}
-
 	@Override
 	public List<Jobtitel> findAll() {
 		return jobtitelRepository.findAll(Sort.by("id"));

@@ -5,14 +5,16 @@ import javax.validation.ConstraintValidatorContext;
 
 import be.vdab.personeel.entities.Werknemer;
 
-public class RijksregisterNrValidator implements ConstraintValidator<RijksregisterNr, Long> {
+public class RijksregisterNrValidator implements ConstraintValidator<RijksregisterNr, Werknemer> {
+	
 	@Override   public void initialize(RijksregisterNr rijksregisterNr) { 
 		
 	}
 
 	@Override
-	public boolean isValid(Long rijksregisterNr, ConstraintValidatorContext context) {
-		if(rijksregisterNr == null) {
+	public boolean isValid(Werknemer werknemer, ConstraintValidatorContext context) {
+		Long rijksregisterNr = werknemer.getRijksregisternr();
+		if(rijksregisterNr.equals(null)) {
 			return true;
 		}
 		long eerste6Cijfers = rijksregisterNr/100000;

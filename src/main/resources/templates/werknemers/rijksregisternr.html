@@ -9,10 +9,15 @@
 	<form method='post'
 		th:action='@{/werknemers/{id}/rijksregisterNr(id=${werknemer.id})}'
 		th:object='${rijksregisterNrForm}'>
-		<label>Rijksregisternummer: <span th:if="${#fields.hasErrors('rijksregisterNr')}"
+		<label>Rijksregisternummer: <span
+			th:if="${#fields.hasErrors('rijksregisterNr')}"
 			th:errors='*{rijksregisterNr}'></span> <input
 			th:field='*{rijksregisterNr}' required autofocus>
-		</label> <input type='submit' value='Bewaren' name='rijksregisterNr'>
+		</label> <input type='submit' value='Opslaan' name='rijksregisterNr'>
+		<div th:if='${#fields.hasGlobalErrors()}'>
+			<div class='fout' th:each='err : ${#fields.globalErrors()}'
+			   th:text='${err}'></div>
+		</div>
 	</form>
 </body>
 </html>

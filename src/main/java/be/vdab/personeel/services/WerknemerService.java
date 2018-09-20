@@ -13,5 +13,5 @@ public interface WerknemerService {
 	Optional<Werknemer> read(long id);
 	Optional<Werknemer> readWnZonderChef();
 	void opslag(long id, BigDecimal opslag);
-//	Optional<Werknemer> findByRijksregisternr(long rijksregisternr);
+	void wijzigRijksregisternr(long id, long rijksregisterNr); 
 }
