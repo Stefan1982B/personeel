@@ -25,11 +25,11 @@ import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
 
 import be.vdab.personeel.constraints.RijksregisterNr;
-import be.vdab.personeel.entities.Werknemer.Stap1;
+
 
 @Entity
 @Table(name = "werknemers")
-@RijksregisterNr(groups = Stap1.class)
+@RijksregisterNr(groups = Werknemer.Stap1.class)
 public class Werknemer implements Serializable {
 	
 	public interface Stap1{};

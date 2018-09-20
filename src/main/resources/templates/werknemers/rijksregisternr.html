@@ -8,11 +8,11 @@
 
 	<form method='post'
 		th:action='@{/werknemers/{id}/rijksregisterNr(id=${werknemer.id})}'
-		th:object='${rijksregisterNrForm}'>
+		th:object='${werknemer}'>
 		<label>Rijksregisternummer: <span
-			th:if="${#fields.hasErrors('rijksregisterNr')}"
-			th:errors='*{rijksregisterNr}'></span> <input
-			th:field='*{rijksregisterNr}' required autofocus>
+			th:if="${#fields.hasErrors('rijksregisternr')}"
+			th:errors='*{rijksregisternr}'></span> <input
+			th:field='*{rijksregisternr}' autofocus>
 		</label> <input type='submit' value='Opslaan' name='rijksregisterNr'>
 		<div th:if='${#fields.hasGlobalErrors()}'>
 			<div class='fout' th:each='err : ${#fields.globalErrors()}'

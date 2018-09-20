@@ -87,29 +87,41 @@ class WerknemerController {
 	@GetMapping("{werknemer}/rijksregisterNr")
 	ModelAndView rijksregisterNr(@PathVariable Optional<Werknemer> werknemer, RedirectAttributes redirectAttributes) {
 		if (werknemer.isPresent()) {
-			RijksregisterNrForm form = new RijksregisterNrForm();
-			form.setRijksregisterNr(werknemer.get().getRijksregisternr());
-			return new ModelAndView(RIJKSREGISTERNR_VIEW).addObject(form).addObject(werknemer.get());
+			return new ModelAndView(RIJKSREGISTERNR_VIEW).addObject(werknemer.get());
 		}
 		redirectAttributes.addAttribute("fout", "Werknemer niet gevonden");
 		return new ModelAndView(REDIRECT_BIJ_WERKNEMER_NIET_GEVONDEN);
 	}
 
-	private static final String REDIRECT_NA_RIJKSREGISTERNR = "redirect:/werknemers/{id}";
-
-	@PostMapping(value = "{werknemer}/rijksregisterNr", params = "rijksregisterNr")
-	ModelAndView rijksregisterNr(@PathVariable Optional<Werknemer> werknemer, @Validated(Werknemer.Stap1.class) Werknemer werkn, SessionStatus sessionStatus,
-			BindingResult bindingResult, RedirectAttributes redirectAttributes, RijksregisterNrForm form) {
-		if (werknemer.isPresent()) {
-			if (bindingResult.hasErrors()) {
-				return new ModelAndView(RIJKSREGISTERNR_VIEW).addObject(werknemer.get());
-			}
-			werknemerService.wijzigRijksregisternr(werknemer.get().getId(), form.getRijksregisterNr());
-			sessionStatus.setComplete();
-			redirectAttributes.addAttribute("id", werknemer.get().getId());
-			return new ModelAndView(REDIRECT_NA_RIJKSREGISTERNR);
-		}
-		redirectAttributes.addAttribute("fout", "Werknemer niet gevonden");
-		return new ModelAndView(REDIRECT_BIJ_WERKNEMER_NIET_GEVONDEN);
-	}
+//	@GetMapping("{werknemer}/rijksregisterNr")
+//	ModelAndView rijksregisterNr(@PathVariable Optional<Werknemer> werknemer, RedirectAttributes redirectAttributes) {
+//		if (werknemer.isPresent()) {
+//			RijksregisterNrForm form = new RijksregisterNrForm();
+//			form.setRijksregisterNr(werknemer.get().getRijksregisternr());
+//			return new ModelAndView(RIJKSREGISTERNR_VIEW).addObject(form).addObject(werknemer.get());
+//		}
+//		redirectAttributes.addAttribute("fout", "Werknemer niet gevonden");
+//		return new ModelAndView(REDIRECT_BIJ_WERKNEMER_NIET_GEVONDEN);
+//	}
+//
+//	private static final String REDIRECT_NA_RIJKSREGISTERNR = "redirect:/werknemers/{id}";
+//
+//	@PostMapping(value = "{werknemer}/rijksregisterNr", params = "rijksregisterNr")
+//	ModelAndView rijksregisterNr(@PathVariable Optional<Werknemer> werknemer, @Validated(Werknemer.Stap1.class) Werknemer werkn, RijksregisterNrForm form, SessionStatus sessionStatus,
+//			BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+//		if (werknemer.isPresent()) {
+//			if (bindingResult.hasErrors()) {
+//				return new ModelAndView(RIJKSREGISTERNR_VIEW).addObject(werknemer.get());
+//			}
+////			Werknemer nieuweWerknemer = werknemer.get();
+////			nieuweWerknemer.wijzigRijksregisternr(form.getRijksregisterNr());
+////			werknemerService.update(nieuweWerknemer);
+//			werknemerService.wijzigRijksregisternr(werknemer.get().getId(), form.getRijksregisterNr());
+//			sessionStatus.setComplete();
+//			redirectAttributes.addAttribute("id", werknemer.get().getId());
+//			return new ModelAndView(REDIRECT_NA_RIJKSREGISTERNR);
+//		}
+//		redirectAttributes.addAttribute("fout", "Werknemer niet gevonden");
+//		return new ModelAndView(REDIRECT_BIJ_WERKNEMER_NIET_GEVONDEN);
+//	}
 }

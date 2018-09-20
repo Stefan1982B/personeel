@@ -55,4 +55,10 @@ class DefaultWerknemerService implements WerknemerService {
 		werknemerRepository.findById(id).ifPresent(werknemer -> werknemer.wijzigRijksregisternr(rijksregisterNr));
 
 	}
+
+//	@Override
+//	public void update(Werknemer werknemer) {
+//		werknemerRepository.save(werknemer);
+//
+//	}
 }

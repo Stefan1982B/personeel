@@ -1,17 +1,16 @@
-package be.vdab.personeel.web;
-
-import javax.validation.constraints.NotNull;
-
-public class RijksregisterNrForm {
-	@NotNull
-	private long rijksregisterNr;
-
-	public long getRijksregisterNr() {
-		return rijksregisterNr;
-	}
-
-	public void setRijksregisterNr(long rijksregisterNr) {
-		this.rijksregisterNr = rijksregisterNr;
-	}
-
-}
+//package be.vdab.personeel.web;
+//
+//
+//public class RijksregisterNrForm {
+//
+//	private long rijksregisterNr;
+//
+//	public long getRijksregisterNr() {
+//		return rijksregisterNr;
+//	}
+//
+//	public void setRijksregisterNr(long rijksregisterNr) {
+//		this.rijksregisterNr = rijksregisterNr;
+//	}
+//
+//}
