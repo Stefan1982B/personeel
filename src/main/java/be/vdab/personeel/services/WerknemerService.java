@@ -13,6 +13,6 @@ public interface WerknemerService {
 	Optional<Werknemer> read(long id);
 	Optional<Werknemer> readWnZonderChef();
 	void opslag(long id, BigDecimal opslag);
-	void wijzigRijksregisternr(long id, long rijksregisterNr); 
-//	void update(Werknemer werknemer);
+//	void wijzigRijksregisternr(long id, long rijksregisterNr); 
+	void update(Werknemer werknemer);
 }
