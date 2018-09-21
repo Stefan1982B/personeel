@@ -14,11 +14,9 @@ import be.vdab.personeel.services.WerknemerService;
 @RequestMapping("jobtitels")
 class JobtitelController {
 	private final JobtitelService jobtitelService;
-	private final WerknemerService werknemerService;
 	
 	JobtitelController(JobtitelService jobtitelService, WerknemerService werknemerService){
 		this.jobtitelService = jobtitelService;
-		this.werknemerService = werknemerService;
 	}
 	private final static String JOBTITEL_VIEW = "jobtitels/jobtitels";
 	
@@ -29,7 +27,6 @@ class JobtitelController {
 	
 	@GetMapping("{jobtitel}")
 	ModelAndView jobtitelsWerknemers(@PathVariable Jobtitel jobtitel) {
-		return new ModelAndView(JOBTITEL_VIEW, "jobtitels", jobtitelService.findAll())
-				.addObject("werknemers", werknemerService.findByJobtitel(jobtitel));
+		return new ModelAndView(JOBTITEL_VIEW, "jobtitels", jobtitelService.findAll());
 	}
 }

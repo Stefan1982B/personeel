@@ -6,6 +6,7 @@ import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -32,7 +33,8 @@ public class WerknemerRepositoryTest extends AbstractTransactionalJUnit4SpringCo
 	@Autowired
 	private WerknemerRepository werknemerRepository;
 	
-	@Autowired JobtitelRepository jobtitelRepository;
+	@Autowired 
+	private JobtitelRepository jobtitelRepository;
 
 	private long idVanTestWerknemer() {
 		return super.jdbcTemplate.queryForObject("select id from werknemers where voornaam='testVoornaam'", Long.class);
@@ -51,17 +53,16 @@ public class WerknemerRepositoryTest extends AbstractTransactionalJUnit4SpringCo
 	@Before
 	public void before() {
 		werknemer = new Werknemer();
+		vulPrivate("id", 1L);
 		vulPrivate("familienaam", "Schuddinck");
 		vulPrivate("voornaam", "Stefan");
 		vulPrivate("email", "stefanschuddinck@hotmail.com");
-		vulPrivate("chef", null);
 		vulPrivate("jobtitel", jobtitel);
+		vulPrivate("salaris", BigDecimal.TEN);
 		vulPrivate("paswoord", "vdab");
-		vulPrivate("geboorte", LocalDate.of(1989, 10, 10));
+		vulPrivate("geboorte", LocalDate.of(1982, 8, 04));
 		vulPrivate("rijksregisternr", 82080432176L);
 		vulPrivate("versie", 1);
-		vulPrivate("salaris", BigDecimal.TEN);
-		vulPrivate("id", 1L);
 		jobtitel = new Jobtitel();
 	}
 
@@ -75,24 +76,16 @@ public class WerknemerRepositoryTest extends AbstractTransactionalJUnit4SpringCo
 
 	}
 
-	@Test
-	public void findByJobtitel() {
-		List<Werknemer> werknemers = werknemerRepository.findByJobtitel(jobtitelRepository.findById(idVanJobtitel()).get());
-		assertEquals(1, werknemers.size());
-		assertEquals("testFamilienaam", werknemers.get(0).getFamilienaam());
-	}
-
-	@Test
-	public void findByChef() {
-		List<Werknemer> werknemers = werknemerRepository.findByChef(werknemerRepository.findById(idVanTestWerknemer()).get());
-		assertEquals(1, werknemers.size());
-		assertEquals("testFamilienaam", werknemers.get(0).getFamilienaam());
-	}
-
 	@Test 
 	public void WerknemerLazyLoaded() { 
 		Werknemer werknemer = werknemerRepository.findById(idVanTestWerknemer()).get(); 
 		assertEquals("testTitelNaam", werknemer.getJobtitel().getNaam()); 
 		}
+	
+	@Test
+	public void findByChefisNull() {
+		Optional<Werknemer> werknemer = werknemerRepository.findByChefIsNull();
+		assertEquals("testFamilienaam2", werknemer.get().getFamilienaam());
+	}
 
 }

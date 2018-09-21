@@ -14,7 +14,7 @@ public class RijksregisterNrValidator implements ConstraintValidator<Rijksregist
 	@Override
 	public boolean isValid(Werknemer werknemer, ConstraintValidatorContext context) {
 		Long rijksregisterNr = werknemer.getRijksregisternr();
-		if(rijksregisterNr.equals(null)) {
+		if(rijksregisterNr == null) {
 			return true;
 		}
 		long eerste6Cijfers = rijksregisterNr/100000;

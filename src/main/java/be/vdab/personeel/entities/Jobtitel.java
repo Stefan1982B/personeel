@@ -24,10 +24,10 @@ public class Jobtitel implements Serializable {
 	@Version
 	private int versie;
 	@OneToMany(mappedBy = "jobtitel")
-	private Set<Werknemer> werknemerLijst;
+	private Set<Werknemer> werknemers;
 
-	public Set<Werknemer> getWerknemerLijst() {
-		return Collections.unmodifiableSet(werknemerLijst);
+	public Set<Werknemer> getWerknemers() {
+		return Collections.unmodifiableSet(werknemers);
 	}
 
 	public long getId() {

@@ -8,8 +8,6 @@ import be.vdab.personeel.entities.Jobtitel;
 import be.vdab.personeel.entities.Werknemer;
 
 public interface WerknemerService {
-	List<Werknemer> findByJobtitel(Jobtitel jobtitel);
-	List<Werknemer> findByChef(Werknemer chef);
 	Optional<Werknemer> read(long id);
 	Optional<Werknemer> readWnZonderChef();
 	void opslag(long id, BigDecimal opslag);

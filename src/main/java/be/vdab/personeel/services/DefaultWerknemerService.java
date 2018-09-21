@@ -1,14 +1,12 @@
 package be.vdab.personeel.services;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
-import be.vdab.personeel.entities.Jobtitel;
 import be.vdab.personeel.entities.Werknemer;
 import be.vdab.personeel.repositories.WerknemerRepository;
 
@@ -23,18 +21,8 @@ class DefaultWerknemerService implements WerknemerService {
 	}
 
 	@Override
-	public List<Werknemer> findByJobtitel(Jobtitel jobtitel) {
-		return werknemerRepository.findByJobtitel(jobtitel);
-	}
-
-	@Override
 	public Optional<Werknemer> read(long id) {
 		return werknemerRepository.findById(id);
-	}
-
-	@Override
-	public List<Werknemer> findByChef(Werknemer chef) {
-		return werknemerRepository.findByChef(chef);
 	}
 
 	@Override

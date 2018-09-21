@@ -1,1 +1,4 @@
-insert into werknemers(id, familienaam, voornaam, email, chefid, jobtitelid, salaris, paswoord, geboorte, rijksregisternr, versie) values('1', 'testFamilienaam', 'testVoornaam', 'testEmail', '1', (select id from jobtitels where naam = 'testTitelNaam'),'2500', 'testPaswoord', '1998-01-01', '82080432176', '1');
+insert into werknemers(id, familienaam, voornaam, email, chefid, jobtitelid, salaris, paswoord, geboorte, rijksregisternr, versie) 
+values('1', 'testFamilienaam', 'testVoornaam', 'testEmail', 1, (select id from jobtitels where naam = 'testTitelNaam'),'2500', 'testPaswoord', '1998-01-01', '82080432176', '1');
+insert into werknemers(id, familienaam, voornaam, email, chefid, jobtitelid, salaris, paswoord, geboorte, rijksregisternr, versie) 
+values('2', 'testFamilienaam2', 'testVoornaam2', 'testEmail2', null, (select id from jobtitels where naam = 'testTitelNaam'),'2500', 'testPaswoord2', '1950-1-31', '50013100129', '1');

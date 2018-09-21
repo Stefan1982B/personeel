@@ -14,8 +14,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedAttributeNode;
-import javax.persistence.NamedEntityGraph;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
@@ -24,14 +22,12 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.NumberFormat;
-import org.springframework.format.annotation.NumberFormat.Style;
 
 import be.vdab.personeel.constraints.RijksregisterNr;
 
 @Entity
 @Table(name = "werknemers")
 @RijksregisterNr
-@NamedEntityGraph(name = Werknemer.MET_JOBTITEL, attributeNodes = @NamedAttributeNode("jobtitel"))
 public class Werknemer implements Serializable {
 
 	public static final String MET_JOBTITEL = "Werknemer.metJobtitel";
@@ -50,20 +46,20 @@ public class Werknemer implements Serializable {
 	@NotNull
 	@Min(1)
 	@Digits(integer = 10, fraction = 2)
-	@NumberFormat(style = Style.NUMBER)
+	@NumberFormat(pattern = "#,##0.00")
 	private BigDecimal salaris;
 	private String paswoord;
 	private LocalDate geboorte;
 	@Column(unique = true)
 	@NotNull
-	private long rijksregisternr;
+	private Long rijksregisternr;
 	@Version
 	private int versie;
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "chefid")
 	private Werknemer chef;
 	@OneToMany(mappedBy = "chef")
-	private Set<Werknemer> werknemerLijst;
+	private Set<Werknemer> ondergeschikten;
 
 	public long getId() {
 		return id;
@@ -93,7 +89,7 @@ public class Werknemer implements Serializable {
 		return geboorte;
 	}
 
-	public long getRijksregisternr() {
+	public Long getRijksregisternr() {
 		return rijksregisternr;
 	}
 
@@ -105,15 +101,27 @@ public class Werknemer implements Serializable {
 		return chef;
 	}
 
-	public Set<Werknemer> getWerknemerLijst() {
-		return Collections.unmodifiableSet(werknemerLijst);
+	public Set<Werknemer> getOndergeschikten() {
+		return Collections.unmodifiableSet(ondergeschikten);
+	}
+
+	public Jobtitel getJobtitel() {
+		return jobtitel;
+	}
+
+	public void opslag(BigDecimal opslag) {
+		salaris = salaris.add(opslag);
+	}
+
+	public void setRijksregisternr(Long rijksregisternr) {
+		this.rijksregisternr = rijksregisternr;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (int) (rijksregisternr ^ (rijksregisternr >>> 32));
+		result = prime * result + ((rijksregisternr == null) ? 0 : rijksregisternr.hashCode());
 		return result;
 	}
 
@@ -126,21 +134,12 @@ public class Werknemer implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Werknemer other = (Werknemer) obj;
-		if (rijksregisternr != other.rijksregisternr)
+		if (rijksregisternr == null) {
+			if (other.rijksregisternr != null)
+				return false;
+		} else if (!rijksregisternr.equals(other.rijksregisternr))
 			return false;
 		return true;
-	}
-
-	public Jobtitel getJobtitel() {
-		return jobtitel;
-	}
-
-	public void opslag(BigDecimal opslag) {
-		salaris = salaris.add(opslag);
-	}
-
-	public void setRijksregisternr(long rijksregisternr) {
-		this.rijksregisternr = rijksregisternr;
 	}
 
 }

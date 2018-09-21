@@ -1,6 +1,5 @@
 package be.vdab.personeel.web;
 
-import java.util.List;
 import java.util.Optional;
 
 import javax.validation.Valid;
@@ -33,10 +32,8 @@ class WerknemerController {
 
 	@GetMapping
 	ModelAndView initieel() {
-		long id = werknemerService.readWnZonderChef().get().getId();
-		List<Werknemer> ondergeschikten = werknemerService.findByChef(werknemerService.read(id).get());
-		return new ModelAndView(WERKNEMER_VIEW, "werknemer", werknemerService.readWnZonderChef().get())
-				.addObject("ondergeschikten", ondergeschikten);
+		Werknemer superChef=werknemerService.readWnZonderChef().get(); 
+		return new ModelAndView(WERKNEMER_VIEW, "werknemer", superChef);
 	}
 
 	private static final String REDIRECT_BIJ_WERKNEMER_NIET_GEVONDEN = "redirect:/";
@@ -44,10 +41,7 @@ class WerknemerController {
 	@GetMapping("{werknemer}")
 	ModelAndView werknemer(@PathVariable Optional<Werknemer> werknemer, RedirectAttributes redirectAttributes) {
 		if (werknemer.isPresent()) {
-			List<Werknemer> ondergeschikten = werknemerService
-					.findByChef(werknemerService.read(werknemer.get().getId()).get());
-			return new ModelAndView(WERKNEMER_VIEW).addObject(werknemer.get()).addObject("ondergeschikten",
-					ondergeschikten);
+			return new ModelAndView(WERKNEMER_VIEW).addObject(werknemer.get());
 		}
 		redirectAttributes.addAttribute("fout", "Werknemer niet gevonden");
 		return new ModelAndView(REDIRECT_BIJ_WERKNEMER_NIET_GEVONDEN);

@@ -11,15 +11,22 @@
 		<dt>Email adres</dt>
 		<dd th:text='${werknemer.email}'></dd>
 		<dt>Salaris</dt>
-		<dd th:text='${werknemer.salaris}'></dd>
+		<dd th:text='${{werknemer.salaris}}'></dd>
 		<dt>Jobtitel</dt>
 		<dd th:text='${werknemer.jobtitel.naam}'></dd>
 		<dt>Geboorte</dt>
-		<dd th:text='${werknemer.geboorte}'></dd>
+		<dd th:text='${{werknemer.geboorte}}'></dd>
+		<dt th:if='${werknemer.chef != null}' th:text="Chef">
+			<dd>
+		<a th:if='${werknemer.chef != null}'
+				th:href='@{/werknemers/{id}(id=${werknemer.chef.id})}'
+				th:text='|${werknemer.chef.voornaam} ${werknemer.chef.familienaam}|'></a>
+		</dd>
 		<dt>Ondergeschikten</dt>
 		<ul>
-			<li th:each='ondergeschikte:${ondergeschikten}'>
-			<a th:href='@{/werknemers/{id}(id=${ondergeschikte.id})}' th:text='|${ondergeschikte.voornaam} ${ondergeschikte.familienaam}|'></a></li>
+			<li th:each='ondergeschikte:${werknemer.ondergeschikten}'><a
+				th:href='@{/werknemers/{id}(id=${ondergeschikte.id})}'
+				th:text='|${ondergeschikte.voornaam} ${ondergeschikte.familienaam}|'></a></li>
 		</ul>
 		<dt>Foto</dt>
 		<img th:alt='|foto werknemer|'
